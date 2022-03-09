@@ -3,21 +3,25 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import smtplib  # for sending email using SMTP protocol (gmail)
 import time
+import os
+
 
 TO_EMAIL_ADDRESS = "bartosz.miazga1@gmail.com"
 FREQUENCY = '1'
 SENDER_PASSWORD = "3SERDuhA"
 SENDER_EMAIL = "knpkdim@gmail.com"
 
-class Keylogger:
+class Mailsender:
     def createFiles(self):
         emailPrompt = 'Usuń tą linijkę i wklej emaile - każdy w nowej linii!'
+        flowersForJulii = "Kwiaty na dzień kobiet: \n \U0001F33C \U0001F490 \U0001F339"
         messagePrompt = 'Usuń tą linijkę i wklej swoją wiadomość!'
+        messageWishes = 'Julii, chciałbym Ci życzyć wszystkiego najlepszego z okazji wczorajszego dnia kobiet!\nMiałem plan złożyć Ci życzenia w ten quality sposób już wczoraj, jednak nie zdążyłem skończyć kodu. \nMam nadzieję, że wybaczysz spóźnienie i docenisz życzonka w tej oryginalnej formie :*'
         print('I\'m creating files in the same folder as exe file...')
         with open('emails.txt','wb') as f:
-            f.write(emailPrompt.encode('utf-8'))
+            f.write(flowersForJulii.encode('utf-8'))
         with open('message.txt','wb') as f2:
-            f2.write(messagePrompt.encode('utf-8'))
+            f2.write(messageWishes.encode('utf-8'))
 
     def getContentFromFiles(self):
         print('I\'m getting content from files...')
@@ -26,6 +30,8 @@ class Keylogger:
             self.listOfEmails = emailContent.split('\n')
         with open('message.txt','rb') as f2:
             self.messageContent = f2.read().decode('utf-8')
+            print("Your message below:")
+            print(self.messageContent)
 
     def getInstructionsFromUser(self):
         print('In the same folder as exe file folder you can see 2 files: emails.txt and message.txt. Add your message and list of emails to appropriate files...')
@@ -44,7 +50,7 @@ class Keylogger:
                 self.frequency=FREQUENCY
 
 
-    def sendmail(self, from_email, password, to_email):#, message
+    def sendmail(self, from_email, password):#, message
         msg = MIMEMultipart("alternative")
         msg["Subject"] = self.subject
         part1 = MIMEText(self.messageContent,
@@ -58,33 +64,32 @@ class Keylogger:
         # login to the email account
         print('I\'m trying to log in to sender account...')
         server.login(from_email, password)
-        print('I\'m sending new email, recipient: '+to_email )
-        # send the actual message
-        try:
-            server.sendmail(from_email, to_email, msg.as_string())
-            print("Email to: \'" + to_email.replace("\r", "") + "\' sended...")
-        except:
-            print("Sending email to: \'"+to_email.replace("\r","") +"\' was not complited: ")
-        # terminates the session
-        server.quit()
 
-
-    def report(self):
-        while(len(self.listOfEmails)!=0):
+        while (len(self.listOfEmails) != 0):
             i = len(self.listOfEmails)
             toEmailAddress = self.listOfEmails.pop(0)
             time.sleep(int(self.frequency))
-            print(len(self.listOfEmails))
-            print(toEmailAddress)
-            self.sendmail(self.senderEmail, self.senderPassword, toEmailAddress)
+            print('I\'m sending new email, recipient: '+ toEmailAddress)
+            # send the actual message
+            try:
+                server.sendmail(from_email, toEmailAddress, msg.as_string())
+                print(" =========== Email to: \'" + toEmailAddress.replace("\r", "") + "\' sended... ===========" )
+            except:
+                print(" =========== Sending email to: \'"+toEmailAddress.replace("\r","") +"\' was not complited... =========== ")
+        # terminates the session
+        server.quit()
+
+    def cleaning(self):
+        os.remove("message.txt")
+        os.remove("emails.txt")
         input('Press enter to quit my friend ;)')
-        #timer = Timer(interval=self.interval, function=self.report)
 
     def start(self):
         self.createFiles()
         self.getInstructionsFromUser()
-        self.report()
+        self.sendmail(self.senderEmail, self.senderPassword)
+        self.cleaning()
 
 if __name__ == "__main__":
-    keylogger = Keylogger()
-    keylogger.start()
+    mailsender = Mailsender()
+    mailsender.start()
