@@ -1,5 +1,5 @@
 # Mail-Sender
-User provide message, title of email, period of time after which e-mail is sent and lists of emails (recipients). It is something like mail-bot.
+User provide message, title of email, period of time after which e-mail is sent and lists of emails (recipients). It is something like mail-bot. I've made this script for my friend from psychologic studies to help her automate her work - sending emails with behavioral surveys.
 
 ## Libraries needed
 
