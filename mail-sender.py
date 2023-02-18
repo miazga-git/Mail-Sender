@@ -11,8 +11,8 @@ from random import seed, randrange
 
 
 FREQUENCY = '1'
-SENDER_PASSWORD = "3SERDuhA"
-SENDER_EMAIL = "knpkdim@gmail.com"
+SENDER_PASSWORD = ""
+SENDER_EMAIL = ""
 NUMBER_OF_EMAILS_PER_SESSION = '100'
 FREQUENCY_BETWEEN_SESSIONS = '10'
 
@@ -22,7 +22,7 @@ FREQUENCY_BETWEEN_SESSIONS = '10'
 
 class Mailsender:
     def greetings(self):
-        greetingText = ['*' ,'*', '*', 'H', 'e', 'l', 'l', 'o',' ', 'J', 'u', 'l', 'i', '*', '*', '*']
+        greetingText = ['*' ,'*', '*', 'H', 'e', 'l', 'l', 'o', '*', '*', '*']
         i = 0
         while (len(greetingText) >=i+1):
             print(greetingText[i], end= ' ')
@@ -32,14 +32,14 @@ class Mailsender:
 
     def createFiles(self):
         emailPrompt = 'Usuń tą linijkę i wklej emaile - każdy w nowej linii!'
-        flowersForJulii = "Kwiaty na dzień kobiet: \n \U0001F33C \U0001F490 \U0001F339"
+        #flowersForJulii = "Kwiaty na dzień kobiet: \n \U0001F33C \U0001F490 \U0001F339"
         messagePrompt = 'Usuń tą linijkę i wklej swoją wiadomość!'
-        messageWishes = 'Julii, chciałbym Ci życzyć wszystkiego najlepszego z okazji wczorajszego dnia kobiet!\nMiałem plan złożyć Ci życzenia w ten quality sposób już wczoraj, jednak nie zdążyłem skończyć kodu. \nMam nadzieję, że wybaczysz spóźnienie i docenisz życzonka w tej oryginalnej formie :*'
+        #messageWishes = 'Julii, chciałbym Ci życzyć wszystkiego najlepszego z okazji wczorajszego dnia kobiet!\nMiałem plan złożyć Ci życzenia w ten quality sposób już wczoraj, jednak nie zdążyłem skończyć kodu. \nMam nadzieję, że wybaczysz spóźnienie i docenisz życzonka w tej oryginalnej formie :*'
         print('I\'m creating files in the same folder as exe file...')
         with open('emails.txt','wb') as f:
-            f.write(flowersForJulii.encode('utf-8'))
+            f.write(emailPrompt.encode('utf-8'))
         with open('message.txt','wb') as f2:
-            f2.write(messageWishes.encode('utf-8'))
+            f2.write(messagePrompt.encode('utf-8'))
 
     def getContentFromFiles(self):
         print('I\'m getting content from files...')
